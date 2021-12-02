@@ -9,23 +9,24 @@ import com.saraha.day38practicetelephonyapi.databinding.ActivityMainBinding
 import android.Manifest.permission
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.provider.ContactsContract
+import android.util.Log
 import android.widget.Toast
 import com.saraha.day38practicetelephonyapi.Model.Contact
-import com.saraha.day38practicetelephonyapi.Model.ContactsInfo
-import com.saraha.day38practicetelephonyapi.Service.CallBroadcastReceiver
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    lateinit var contactArray: ArrayList<ContactsInfo>
+    lateinit var contactArray: ArrayList<Contact>
 
     var callBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val phone = intent?.getSerializableExtra("phone") as Contact
             Toast.makeText(this@MainActivity, phone.fullname, Toast.LENGTH_SHORT).show()
+            Log.d(TAG,"MainActivity: - onReceive: - ${phone.phone}: ${phone.fullname}")
         }
 
     }
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                     if (phoneCursor?.moveToNext() == true) {
                         val phoneNumber = phoneCursor?.getString(
                             phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                        contactArray.add(ContactsInfo(contactId, displayName, phoneNumber))
+                        contactArray.add(Contact(displayName,contactId,phoneNumber))
                     }
                     phoneCursor?.close()
                 }

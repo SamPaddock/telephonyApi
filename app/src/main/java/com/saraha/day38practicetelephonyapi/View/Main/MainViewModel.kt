@@ -14,22 +14,22 @@ class MainViewModel: ViewModel() {
     val contactLiveData = MutableLiveData<List<Contact>?>()
     val boolLiveData = MutableLiveData<Boolean?>()
 
-    fun getContactByNumber(phone: String){
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = ContactRepository().getContactByNumber(phone)
-            withContext(Dispatchers.Main){
-                if (!response.isSuccessful) {
-                    contactLiveData.value = null
-                    return@withContext
-                }
-
-                response.body()?.let { contactInfo ->
-                    val contact = if (contactInfo.isNotEmpty()) contactInfo else null
-                    contactLiveData.value = contact.takeIf { contact != null }
-                }
-            }
-        }
-    }
+//    fun getContactByNumber(phone: String){
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val response = ContactRepository().getContactByNumber(phone)
+//            withContext(Dispatchers.Main){
+//                if (!response.isSuccessful) {
+//                    contactLiveData.value = null
+//                    return@withContext
+//                }
+//
+//                response.body()?.let { contactInfo ->
+//                    val contact = if (contactInfo.isNotEmpty()) contactInfo else null
+//                    contactLiveData.value = contact.takeIf { contact != null }
+//                }
+//            }
+//        }
+//    }
 
     fun postContacts(contacts: List<Contact>){
         CoroutineScope(Dispatchers.IO).launch {

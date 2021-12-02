@@ -1,9 +1,10 @@
 package com.saraha.day38practicetelephonyapi.Service
 
 import android.app.Service
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.IBinder
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import com.saraha.day38practicetelephonyapi.Model.Contact
 import com.saraha.day38practicetelephonyapi.Repository.ContactRepository
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +40,8 @@ class MyService : Service() {
                         }
 
                         response.body()?.let { it ->
-                            val list = if (it.isNotEmpty()) it[0] else null
+                            var receivedCaller = phone.takeLast(9)
+                            val list = it.find { it.phone.takeLast(9).equals(receivedCaller)}
                             result = list.takeIf { list != null }
                             serviceIntent.putExtra("phone", result)
                         }
